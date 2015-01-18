@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from datetime import date
+from datetime import date, datetime
 from workalendar.usa import Tennessee
 
 PRIME_DATE = date(2014, 12, 1)
@@ -45,48 +45,19 @@ DAY_DICT = {
 cal = Tennessee()
 holidays = cal.holidays(2015)
 test = dict(holidays)
-holiday_dates = []
-for i in range(0, len(holidays)):
-    holiday_dates.append(holidays[i][0])
 
 
 def get_date():
     try:
-        year = int((input("Please enter the year: ")) or date.today().year)
-
-        month = int((input("Please enter the month: ")) or date.today().month)
-        while month not in range(1, 13):
-            print("That is not a valid month.")
-            month = int(input("Please enter the month: ") or date.today().month)
-
-        day = int((input("Please enter the day: ") or date.today().day))
-        if month in (1, 3, 5, 7, 8, 10, 12):
-            while day not in range(1, 32):
-                print(
-                    "That is not a valid day. Please enter a number from 1-31: ")
-                day = int((input("Please enter the day: ")) or date.today().day)
-        elif month in (4, 6, 9, 11):
-            while day not in range(1, 31):
-                print(
-                    "That is not a valid day. Please enter a number from 1-30: ")
-                day = int((input("Please enter the day: ")) or date.today().day)
-        elif month == 2 and year % 4 != 0:  # not a leap year
-            while day not in range(1, 29):
-                print(
-                    "That is not a valid day. Please enter a number from 1-28: ")
-                day = int((input("Please enter the day: ")) or date.today().day)
-        elif month == 2 and year % 4 == 0:  # leap year
-            while day not in range(1, 30):
-                print(
-                    "That is not a valid day. Please enter a number from 1-29: ")
-                day = int((input("Please enter the day: ")) or date.today().day)
-        return date(year, month, day)
+        inp_date = input("Please enter the date in MM-DD-YY format: ")
+        inp_date = datetime.strptime(inp_date, "%m-%d-%y")
     except ValueError:
-        print("That is an unacceptable error. I quit!")
+        print("That is not a valid date.")
         exit()
 
+    return inp_date
 
-req_date = get_date()
+req_date = datetime.date(get_date())
 
 print("\n\n" + req_date.strftime("%x") + "\n" +
       DAY_DICT[(req_date.toordinal() - PRIME_DATE.toordinal()) % 35 + 1])
