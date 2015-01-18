@@ -43,8 +43,6 @@ DAY_DICT = {
     35: "Second day off between training and days",
 }
 cal = Tennessee()
-holidays = cal.holidays(2015)
-test = dict(holidays)
 
 
 def get_date():
@@ -58,8 +56,9 @@ def get_date():
     return inp_date
 
 req_date = datetime.date(get_date())
+holidays = dict(cal.holidays(req_date.year))
 
 print("\n\n" + req_date.strftime("%x") + "\n" +
       DAY_DICT[(req_date.toordinal() - PRIME_DATE.toordinal()) % 35 + 1])
-if req_date in test:
-    print("\nAlso, that day is {0}!".format(test[req_date]))
+if req_date in holidays:
+    print("\nAlso, that day is {0}!".format(holidays[req_date]))
